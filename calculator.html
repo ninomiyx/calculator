@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-6">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>calculator</title>
+    <link rel="stylesheet" type="text/css" href="./css/page.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="display">
+        </div>
+        <div id="buttons">
+            <!-- generate buttons -->
+        </div>
+    </div>
+
+<script>
+const buttons = document.querySelector('#buttons');
+const display = document.querySelector('.display');
+const buttonTextList = [
+    'C', '±', '%', '/',
+    '1', '2', '3', '*',
+    '4', '5', '6', '-',
+    '7', '8', '9', '+',
+    'e', '0', '.', '='
+];
+for (let i = 0; i < buttonTextList.length; i++) {
+    const text = buttonTextList[i];
+    const element = document.createElement("div");
+    element.className = "button";
+    element.innerText = text;
+    element.onclick = function () {
+        display.innerText = `${display.innerText}${text}`;
+    };
+    buttons.appendChild(element);
+}
+
+</script>
+
+</body>
+
+</html>
