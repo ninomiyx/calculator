@@ -28,13 +28,34 @@ const buttonTextList = [
     '7', '8', '9', '+',
     'e', '0', '.', '='
 ];
+
+let lastValue = 0;
+let clearDisplay = true;
+display.innerText = `${lastValue}`;
+
 for (let i = 0; i < buttonTextList.length; i++) {
     const text = buttonTextList[i];
     const element = document.createElement("div");
     element.className = "button";
     element.innerText = text;
     element.onclick = function () {
-        display.innerText = `${display.innerText}${text}`;
+        if (text === 'C') {
+            lastValue = 0;
+            clearDisplay = true;
+            display.innerText = `${lastValue}`;
+        } else if (text === '+') {
+            const current = parseFloat(display.innerText);
+            lastValue += current;
+            display.innerText = `${lastValue}`;
+            clearDisplay = true;
+        } else {
+            if (clearDisplay) {
+                display.innerText = `${text}`;
+                clearDisplay = false;
+            } else {
+                display.innerText = `${display.innerText}${text}`;
+            }
+        }
     };
     buttons.appendChild(element);
 }

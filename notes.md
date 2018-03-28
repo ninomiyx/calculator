@@ -28,3 +28,19 @@
 - 字符串
     - `'string'` / `"string"` / `"'"` / `'"'`
     - ` ``${varible}`` `
+
+
+ 判断语句：
+ - `==` vs `===`
+    - `true == 1` // true
+    - `"" == 0` // true
+    - `0 == false` // true
+    - `0 === false` // false
+    - `NaN === NaN` // false (Not a Number)
+    - `isNaN(NaN)` // true
+    - false: 0, "", []
+    - true: 1, "xx", [0], {}
+ - `>` / `<` / `<=` / `>=`
+ - `||` / `&&`
+ - `true || console.log("not execute")`
+ - `false || console.log("will execute")`
