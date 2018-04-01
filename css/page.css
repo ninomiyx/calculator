@@ -6,13 +6,23 @@
     padding: 10px;
 }
 
-.display {
-    height: 150px;
-    line-height: 150px;
+#display {
+    line-height: 130px;
+    font-size: 100px;
+    padding: 0 30px;
+    text-align: right;
+    box-sizing: border-box;
     border: 1px dotted #A8A7A7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 100px;
 }
 
-.container::after {
+#buttons {
+    margin-top: 10px;
+}
+
+#buttons::after {
     content: ' ';
     clear: both;
     display: table;

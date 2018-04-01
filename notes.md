@@ -3,8 +3,8 @@
 # css
 
 有三种选择器：
-- `#id`
-- `.class`
+- `#id` 唯一的 一个div里只能有一个id
+- `.class` 有多个 一个div里可以有多个class
 - `label`
 
 

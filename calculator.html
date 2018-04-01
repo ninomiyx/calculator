@@ -11,7 +11,7 @@
 
 <body>
     <div class="container">
-        <div class="display">
+        <div id="display">
         </div>
         <div id="buttons">
             <!-- generate buttons -->
@@ -20,40 +20,103 @@
 
 <script>
 const buttons = document.querySelector('#buttons');
-const display = document.querySelector('.display');
+const display = document.querySelector('#display');
 const buttonTextList = [
     'C', '±', '%', '/',
-    '1', '2', '3', '*',
+    '7', '8', '9', '*',
     '4', '5', '6', '-',
-    '7', '8', '9', '+',
-    'e', '0', '.', '='
+    '1', '2', '3', '+',
+    '0',      '.', '='
 ];
+const SHOWING_RESULT = 1;
+const WAITING_INPUT = 2;
 
-let lastValue = 0;
-let clearDisplay = true;
-display.innerText = `${lastValue}`;
+let result = 0;
+display.innerText = `${result}`;
+let displayState = SHOWING_RESULT;
+let lastOperator = undefined;
+
+function calculateResult(lastResult, operator, currentInput) {
+    if (operator === undefined) {
+        return currentInput;
+    }
+    if (operator === '+') {
+        return lastResult + currentInput;
+    }
+    if (operator === '-') {
+        return lastResult - currentInput;
+    }
+    if (operator === '*') {
+        return lastResult * currentInput;
+    }
+    if (operator === '/') {
+        return lastResult / currentInput;
+    }
+    return 0;
+}
+
+function isOperator(text) {
+    return text === '+'
+        || text === '-'
+        || text === '*'
+        || text === '/';
+}
 
 for (let i = 0; i < buttonTextList.length; i++) {
     const text = buttonTextList[i];
     const element = document.createElement("div");
     element.className = "button";
     element.innerText = text;
+    if (text === '0') {
+        element.style = 'width: 300px; padding-right: 150px;';
+    }
     element.onclick = function () {
         if (text === 'C') {
-            lastValue = 0;
-            clearDisplay = true;
-            display.innerText = `${lastValue}`;
-        } else if (text === '+') {
-            const current = parseFloat(display.innerText);
-            lastValue += current;
-            display.innerText = `${lastValue}`;
-            clearDisplay = true;
-        } else {
-            if (clearDisplay) {
-                display.innerText = `${text}`;
-                clearDisplay = false;
+            result = 0;
+            display.innerText = `${result}`;
+            displayState = SHOWING_RESULT;
+            lastOperator = undefined;
+        } else if (text === '±') {
+            display.innerText = `${-1 * parseFloat(display.innerText)}`;
+            if (displayState === SHOWING_RESULT) {
+                result *= -1;
+            }
+        } else if (text === '%') {
+            if (displayState === SHOWING_RESULT) {
+                result /= 100;
+                display.innerText = `${result}`;
             } else {
-                display.innerText = `${display.innerText}${text}`;
+                display.innerText = `${parseFloat(display.innerText) / 100}`;
+            }
+        } else if (text === '=') {
+            if (displayState == WAITING_INPUT) {
+                const currentInput = parseFloat(display.innerText);
+                result = calculateResult(result, lastOperator, currentInput);
+                display.innerText = `${result}`;
+                displayState = SHOWING_RESULT;
+                lastOperator = undefined;
+            }
+        } else if (isOperator(text)) {
+            if (displayState === WAITING_INPUT) {
+                const currentInput = parseFloat(display.innerText);
+                result = calculateResult(result, lastOperator, currentInput);
+                display.innerText = `${result}`;
+                displayState = SHOWING_RESULT;
+            }
+            lastOperator = text;
+        } else {
+            if (displayState === SHOWING_RESULT) {
+                display.innerText = `${text}`;
+                if (display.innerText === '.') {
+                    display.innerText = '0.';
+                }
+                displayState = WAITING_INPUT;
+            } else {
+                if (text === '.' && display.innerText.indexOf('.') !== -1) {
+                    console.log('Error input .');
+                } else {
+                    display.innerText = `${display.innerText}${text}`;
+                }
             }
         }
     };
